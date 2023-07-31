@@ -89,7 +89,7 @@ ORDER BY 1,2;
 SELECT * FROM portfolioproject.covidvaccinations;
 SELECT * FROM portfolioproject.coviddeaths;
 
--- Looking at Total Population vs Vaccination
+-- Looking at Total Population vs Vaccination.
 
 SELECT dea.continent, dea.location, dea.date, dea.population, vac.new_vaccinations,
 SUM(CAST(vac.new_vaccinations as UNSIGNED)) OVER (PARTITION BY dea.location ORDER BY dea.location, dea.date) as RollingPeopleVaccinated
@@ -100,7 +100,7 @@ AND dea.date = vac.date
 WHERE dea.continent <> '' 
 ORDER BY 2,3;
 
--- BY USING CTE 
+-- BY USING CTE.
 
 With PopvsVac (Continent, Location, Date, Population, New_Vaccinations, RollingPeopleVaccinated) as 
 ( 
@@ -115,7 +115,7 @@ WHERE dea.continent <> ''
 SELECT *, (RollingPeopleVaccinated/Population)*100
 FROM PopvsVac;
 
--- BY USING A TEMP TABLE 
+-- BY USING A TEMP TABLE.
 
 DROP TABLE IF EXISTS PercentPopulationVaccinated;
 CREATE TEMPORARY TABLE PercentPopulationVaccinated 
@@ -141,7 +141,7 @@ WHERE dea.continent <> '';
 SELECT *, (RollingPeopleVaccinated/Population)*100 as PercentRollingPeopleVaccinated
 FROM PercentPopulationVaccinated;
 
--- Creating Views for later vizualisatons
+-- Creating Views to store data for later vizualisatons.
 --
 CREATE VIEW portfolioproject.PercentPopulationVaccinated as 
 SELECT dea.continent, dea.location, dea.date, dea.population, vac.new_vaccinations, 
